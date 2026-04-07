@@ -1,0 +1,105 @@
+#screen-login {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 0;
+  min-height: 100dvh;
+  padding: 32px 24px;
+}
+
+#screen-login.active {
+  display: flex;
+}
+
+.login-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 36px;
+}
+
+.login-emoji {
+  font-size: 52px;
+  margin-bottom: 12px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.login-title {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, var(--green), var(--blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.login-sub {
+  color: var(--muted);
+  font-size: 15px;
+  margin-top: 4px;
+}
+
+.login-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 340px;
+}
+
+.login-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+  color: var(--text);
+  width: 100%;
+}
+
+.login-card:hover {
+  border-color: var(--green);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(63, 185, 80, 0.12);
+}
+
+.login-card:active { transform: scale(0.98); }
+
+.login-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.login-card-info { flex: 1; text-align: left; }
+.login-card-info h3 { font-size: 17px; font-weight: 600; }
+.login-card-info p { color: var(--muted); font-size: 13px; margin-top: 2px; }
+.login-card-arrow { color: var(--muted); font-size: 20px; }
+
+.login-loading {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 24px;
+}
+
+.login-loading.visible { display: flex; }
