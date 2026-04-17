@@ -144,3 +144,127 @@
 }
 
 .streak-label { font-size: 12px; color: var(--muted); text-align: center; }
+
+/* ── Badges de extras en los botones de cepillado ────────────── */
+.brush-extras {
+  font-size: 14px;
+  min-height: 18px;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+/* ── Modal de seguimiento (seda / enjuague) ───────────────────── */
+.extras-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s var(--ease);
+}
+
+.extras-modal.open {
+  pointer-events: all;
+  opacity: 1;
+}
+
+.extras-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.extras-sheet {
+  position: relative;
+  width: 100%;
+  background: var(--surface);
+  border-radius: var(--radius) var(--radius) 0 0;
+  border-top: 1.5px solid var(--border);
+  padding: 24px 20px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transform: translateY(24px);
+  transition: transform 0.28s var(--ease);
+}
+
+.extras-modal.open .extras-sheet {
+  transform: translateY(0);
+}
+
+.extras-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.extras-emoji { font-size: 28px; line-height: 1; }
+
+.extras-title {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+.extras-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.extras-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.extras-row-label {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.extras-toggle-group {
+  display: flex;
+  gap: 8px;
+}
+
+.extras-toggle {
+  padding: 7px 20px;
+  border-radius: var(--radius-sm);
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s var(--ease);
+}
+
+.extras-toggle.selected[data-value="true"] {
+  background: var(--green-dim);
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.extras-toggle.selected[data-value="false"] {
+  background: var(--surface2);
+  border-color: var(--muted);
+  color: var(--text);
+}
+
+.extras-confirm {
+  background: var(--green);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.18s;
+}
+
+.extras-confirm:active { opacity: 0.8; }
