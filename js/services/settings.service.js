@@ -1,12 +1,16 @@
 import { db } from '../config/firebase.js';
 
+function getUserProfileRef(userId) {
+  return db.doc(`users/${userId}`);
+}
+
 export async function getUserProfile(userId) {
-  const snap = await db.doc(`users/${userId}/profile`).get();
+  const snap = await getUserProfileRef(userId).get();
   return snap.exists ? snap.data() : null;
 }
 
 export async function saveUserSettings(user) {
-  return db.doc(`users/${user.id}/profile`).set({
+  return getUserProfileRef(user.id).set({
     nombre: user.nombre,
     email: `${user.id}@cepillacheck.app`,
     hora_recordatorio: user.hora_recordatorio,
