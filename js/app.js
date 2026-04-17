@@ -35,14 +35,33 @@ function bindNavEvents() {
 }
 
 function registerServiceWorker() {
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker
-        .register('./sw.js')
-        .then(() => console.log('SW registrado ✓'))
-        .catch((err) => console.warn('SW no pudo registrarse:', err));
-    });
-  }
+  if (!('serviceWorker' in navigator)) return;
+
+  window.addEventListener('load', async () => {
+    const isLocalhost = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+
+    if (isLocalhost) {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(registrations.map((registration) => registration.unregister()));
+
+      if ('caches' in window) {
+        const cacheKeys = await window.caches.keys();
+        await Promise.all(
+          cacheKeys
+            .filter((key) => key.startsWith('cepillacheck-'))
+            .map((key) => window.caches.delete(key))
+        );
+      }
+
+      console.log('SW desactivado en desarrollo');
+      return;
+    }
+
+    navigator.serviceWorker
+      .register('./sw.js')
+      .then(() => console.log('SW registrado'))
+      .catch((err) => console.warn('SW no pudo registrarse:', err));
+  });
 }
 
 function bootstrap() {
