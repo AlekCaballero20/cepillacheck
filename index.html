@@ -87,12 +87,14 @@
           <span class="brush-icon">🌅</span>
           <span class="brush-label">Mañana</span>
           <span class="brush-status" id="status-manana">Pendiente</span>
+          <span class="brush-extras" id="extras-manana"></span>
         </button>
 
         <button class="brush-btn" id="btn-noche" type="button" data-brush-moment="noche">
           <span class="brush-icon">🌙</span>
           <span class="brush-label">Noche</span>
           <span class="brush-status" id="status-noche">Pendiente</span>
+          <span class="brush-extras" id="extras-noche"></span>
         </button>
       </div>
 
@@ -238,6 +240,34 @@
   </nav>
 
   <div class="toast" id="toast"></div>
+
+  <!-- Modal de seguimiento: seda dental y enjuague bucal -->
+  <div id="extras-modal" class="extras-modal" aria-hidden="true">
+    <div class="extras-backdrop"></div>
+    <div class="extras-sheet">
+      <div class="extras-header">
+        <span class="extras-emoji" id="extras-emoji">🌅</span>
+        <span class="extras-title" id="extras-title">Mañana registrado 🪥</span>
+      </div>
+      <div class="extras-body">
+        <div class="extras-row">
+          <span class="extras-row-label">🦷 Seda dental</span>
+          <div class="extras-toggle-group">
+            <button class="extras-toggle" data-extras-key="seda" data-value="true" type="button">Sí</button>
+            <button class="extras-toggle" data-extras-key="seda" data-value="false" type="button">No</button>
+          </div>
+        </div>
+        <div class="extras-row">
+          <span class="extras-row-label">💧 Enjuague bucal</span>
+          <div class="extras-toggle-group">
+            <button class="extras-toggle" data-extras-key="enjuague" data-value="true" type="button">Sí</button>
+            <button class="extras-toggle" data-extras-key="enjuague" data-value="false" type="button">No</button>
+          </div>
+        </div>
+      </div>
+      <button class="btn extras-confirm" id="extras-confirm" type="button">Listo ✓</button>
+    </div>
+  </div>
 
   <script type="module" src="./js/app.js"></script>
 </body>
