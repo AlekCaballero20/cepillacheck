@@ -13,17 +13,27 @@ export function renderBrushState(todayData) {
   const stsM = byId('status-manana');
   btnM.classList.toggle('done', Boolean(todayData.manana));
   stsM.textContent = todayData.manana ? '✓ Registrado' : 'Pendiente';
+  byId('extras-manana').textContent = buildExtrasLabel(todayData, 'manana');
 
   const btnN = byId('btn-noche');
   const stsN = byId('status-noche');
   btnN.classList.toggle('done', Boolean(todayData.noche));
   stsN.textContent = todayData.noche ? '✓ Registrado' : 'Pendiente';
+  byId('extras-noche').textContent = buildExtrasLabel(todayData, 'noche');
 
   const sub = byId('dash-cta-sub');
   const both = todayData.manana && todayData.noche;
   const none = !todayData.manana && !todayData.noche;
   sub.textContent = both ? '¡Completaste los dos hoy! 🎉' : none ? 'Registra tus cepillados de hoy' : 'Ya falta solo uno 💪';
   sub.className = both ? 'all-done' : '';
+}
+
+function buildExtrasLabel(data, moment) {
+  if (!data[moment]) return '';
+  const parts = [];
+  if (data[`${moment}_seda`])     parts.push('🦷');
+  if (data[`${moment}_enjuague`]) parts.push('💧');
+  return parts.join(' ');
 }
 
 export function renderPartnerState(partnerName, partnerData) {
@@ -42,3 +52,45 @@ export function renderDashboardStreaks(streaks) {
   byId('streak-current').textContent = streaks.current;
   byId('streak-max').textContent = streaks.max;
 }
+
+/**
+ * Muestra el modal de seguimiento (seda / enjuague) y retorna una Promise
+ * que resuelve con { seda: bool, enjuague: bool } al pulsar "Listo".
+ */
+export function showExtrasModal(moment) {
+  return new Promise((resolve) => {
+    const modal = byId('extras-modal');
+    byId('extras-emoji').textContent  = moment === 'manana' ? '🌅' : '🌙';
+    byId('extras-title').textContent  = moment === 'manana' ? 'Mañana registrado 🪥' : 'Noche registrada 🪥';
+
+    let seda     = false;
+    let enjuague = false;
+
+    // Resetear estado visual de los toggles
+    modal.querySelectorAll('.extras-toggle').forEach((btn) => btn.classList.remove('selected'));
+
+    // Escuchar clicks en los toggles (con AbortController para limpiar al cerrar)
+    const ac = new AbortController();
+    modal.querySelectorAll('.extras-toggle').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.extrasKey;
+        const val = btn.dataset.value === 'true';
+        modal.querySelectorAll(`[data-extras-key="${key}"]`).forEach((b) => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        if (key === 'seda')     seda     = val;
+        if (key === 'enjuague') enjuague = val;
+      }, { signal: ac.signal });
+    });
+
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+
+    byId('extras-confirm').onclick = () => {
+      ac.abort();
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      resolve({ seda, enjuague });
+    };
+  });
+}
+

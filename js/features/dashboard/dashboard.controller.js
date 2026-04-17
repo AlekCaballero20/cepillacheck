@@ -3,7 +3,7 @@ import { state, setPartnerData, setTodayData } from '../../core/state.js';
 import { showToast } from '../../core/toast.js';
 import { getTodaySession, saveTodaySession } from '../../services/sessions.service.js';
 import { calcStreaks } from '../../services/stats.service.js';
-import { renderBrushState, renderDashboardHeader, renderDashboardStreaks, renderPartnerState } from './dashboard.ui.js';
+import { renderBrushState, renderDashboardHeader, renderDashboardStreaks, renderPartnerState, showExtrasModal } from './dashboard.ui.js';
 
 export async function loadDashboard() {
   if (!state.currentUser) return;
@@ -34,18 +34,43 @@ export function bindDashboardEvents() {
 export async function toggleBrush(moment) {
   if (!state.currentUser) return;
 
-  const previous = { ...state.todayData };
-  setTodayData({
-    ...state.todayData,
-    [moment]: !state.todayData[moment],
-  });
+  const turningOn = !state.todayData[moment];
+  const previous  = { ...state.todayData };
+  const label     = moment === 'manana' ? 'Mañana' : 'Noche';
+
+  if (!turningOn) {
+    // Desactivar: limpiar cepillado + seda + enjuague del mismo momento
+    setTodayData({
+      ...state.todayData,
+      [moment]:                  false,
+      [`${moment}_seda`]:        false,
+      [`${moment}_enjuague`]:    false,
+    });
+    renderBrushState(state.todayData);
+    try {
+      await saveTodaySession(state.currentUser.id, state.todayData);
+      showToast('Registro eliminado', 'neutral');
+    } catch {
+      setTodayData(previous);
+      renderBrushState(state.todayData);
+      showToast('Sin conexión — intenta de nuevo', 'error');
+    }
+    return;
+  }
+
+  // Activar: marcar cepillado y mostrar preguntas de seguimiento
+  setTodayData({ ...state.todayData, [moment]: true, [`${moment}_seda`]: false, [`${moment}_enjuague`]: false });
+  renderBrushState(state.todayData);
+
+  const extras = await showExtrasModal(moment);
+
+  setTodayData({ ...state.todayData, [`${moment}_seda`]: extras.seda, [`${moment}_enjuague`]: extras.enjuague });
   renderBrushState(state.todayData);
 
   try {
     await saveTodaySession(state.currentUser.id, state.todayData);
-    const label = moment === 'manana' ? 'Mañana' : 'Noche';
-    showToast(state.todayData[moment] ? `¡${label} registrado! 🪥` : 'Registro eliminado', state.todayData[moment] ? 'success' : 'neutral');
-  } catch (error) {
+    showToast(`¡${label} registrado! 🪥`, 'success');
+  } catch {
     setTodayData(previous);
     renderBrushState(state.todayData);
     showToast('Sin conexión — intenta de nuevo', 'error');
