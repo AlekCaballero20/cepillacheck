@@ -66,6 +66,16 @@
 .cp-pct { font-size: 13px; color: var(--muted); min-width: 34px; text-align: right; font-variant-numeric: tabular-nums; }
 
 .heat-card .section-label { margin-bottom: 14px; }
+
+.extras-stats-section { margin-top: 12px; }
+.extras-stats-section:first-of-type { margin-top: 0; }
+.extras-stats-section + .extras-stats-section { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--surface2); }
+.extras-stats-sublabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
 .heat-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
