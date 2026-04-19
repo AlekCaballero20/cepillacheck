@@ -58,8 +58,11 @@ function registerServiceWorker() {
     }
 
     navigator.serviceWorker
-      .register('./sw.js')
-      .then(() => console.log('SW registrado'))
+      .register('./sw.js', { updateViaCache: 'none' })
+      .then(async (registration) => {
+        await registration.update();
+        console.log('SW registrado y actualizado');
+      })
       .catch((err) => console.warn('SW no pudo registrarse:', err));
   });
 }
