@@ -61,6 +61,30 @@ export function countSessions(monthData) {
   return count;
 }
 
+export function countExtras(monthData) {
+  let totalBrushings = 0;
+  let sedaCount = 0;
+  let enjuagueCount = 0;
+
+  Object.values(monthData).forEach((day) => {
+    if (day.manana) {
+      totalBrushings += 1;
+      if (day.manana_seda) sedaCount += 1;
+      if (day.manana_enjuague) enjuagueCount += 1;
+    }
+    if (day.noche) {
+      totalBrushings += 1;
+      if (day.noche_seda) sedaCount += 1;
+      if (day.noche_enjuague) enjuagueCount += 1;
+    }
+  });
+
+  const sedaPct = totalBrushings > 0 ? Math.round((sedaCount / totalBrushings) * 100) : 0;
+  const enjuaguePct = totalBrushings > 0 ? Math.round((enjuagueCount / totalBrushings) * 100) : 0;
+
+  return { sedaCount, enjuagueCount, totalBrushings, sedaPct, enjuaguePct };
+}
+
 export async function getStatsSnapshot(currentUserId, year, month, allUsers = ['alek', 'cata']) {
   const streaks = await calcStreaks(currentUserId);
   const [alekData, cataData] = await Promise.all([
@@ -72,6 +96,8 @@ export async function getStatsSnapshot(currentUserId, year, month, allUsers = ['
   const maxPossible = now.getDate() * 2;
   const alekCount = countSessions(alekData);
   const cataCount = countSessions(cataData);
+  const alekExtras = countExtras(alekData);
+  const cataExtras = countExtras(cataData);
   const alekPct = maxPossible > 0 ? Math.round((alekCount / maxPossible) * 100) : 0;
   const cataPct = maxPossible > 0 ? Math.round((cataCount / maxPossible) * 100) : 0;
   const currentPct = currentUserId === 'alek' ? alekPct : cataPct;
@@ -86,6 +112,10 @@ export async function getStatsSnapshot(currentUserId, year, month, allUsers = ['
     monthData: {
       alek: alekData,
       cata: cataData,
+    },
+    extras: {
+      alek: alekExtras,
+      cata: cataExtras,
     },
     calendarMeta: {
       year,
