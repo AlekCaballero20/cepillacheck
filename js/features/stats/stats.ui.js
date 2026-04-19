@@ -14,6 +14,18 @@ export function renderComparison({ alekPct, cataPct }) {
   byId('pct-cata').textContent = `${cataPct}%`;
 }
 
+export function renderExtrasStats({ alek, cata }) {
+  byId('bar-seda-alek').style.width = `${alek.sedaPct}%`;
+  byId('pct-seda-alek').textContent = `${alek.sedaPct}%`;
+  byId('bar-seda-cata').style.width = `${cata.sedaPct}%`;
+  byId('pct-seda-cata').textContent = `${cata.sedaPct}%`;
+
+  byId('bar-enjuague-alek').style.width = `${alek.enjuaguePct}%`;
+  byId('pct-enjuague-alek').textContent = `${alek.enjuaguePct}%`;
+  byId('bar-enjuague-cata').style.width = `${cata.enjuaguePct}%`;
+  byId('pct-enjuague-cata').textContent = `${cata.enjuaguePct}%`;
+}
+
 export function renderHeatCalendar(year, month, alekData, cataData) {
   const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   byId('heat-month-name').textContent = `${monthNames[month]} ${year}`;

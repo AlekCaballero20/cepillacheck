@@ -1,6 +1,6 @@
 import { state } from '../../core/state.js';
 import { getStatsSnapshot } from '../../services/stats.service.js';
-import { renderComparison, renderHeatCalendar, renderStatsHeader } from './stats.ui.js';
+import { renderComparison, renderExtrasStats, renderHeatCalendar, renderStatsHeader } from './stats.ui.js';
 
 export async function loadStats() {
   if (!state.currentUser) return;
@@ -12,5 +12,6 @@ export async function loadStats() {
   const snapshot = await getStatsSnapshot(state.currentUser.id, year, month);
   renderStatsHeader(snapshot.streaks, snapshot.currentPct);
   renderComparison(snapshot.comparison);
+  renderExtrasStats(snapshot.extras);
   renderHeatCalendar(year, month, snapshot.monthData.alek, snapshot.monthData.cata);
 }
