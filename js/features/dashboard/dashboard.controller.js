@@ -39,12 +39,13 @@ export async function toggleBrush(moment) {
   const label     = moment === 'manana' ? 'Mañana' : 'Noche';
 
   if (!turningOn) {
-    // Desactivar: limpiar cepillado + seda + enjuague del mismo momento
+    // Desactivar: limpiar cepillado + extras del mismo momento
     setTodayData({
       ...state.todayData,
       [moment]:                  false,
       [`${moment}_seda`]:        false,
       [`${moment}_enjuague`]:    false,
+      [`${moment}_irrigador`]:   false,
     });
     renderBrushState(state.todayData);
     try {
@@ -59,12 +60,17 @@ export async function toggleBrush(moment) {
   }
 
   // Activar: marcar cepillado y mostrar preguntas de seguimiento
-  setTodayData({ ...state.todayData, [moment]: true, [`${moment}_seda`]: false, [`${moment}_enjuague`]: false });
+  setTodayData({ ...state.todayData, [moment]: true, [`${moment}_seda`]: false, [`${moment}_enjuague`]: false, [`${moment}_irrigador`]: false });
   renderBrushState(state.todayData);
 
   const extras = await showExtrasModal(moment);
 
-  setTodayData({ ...state.todayData, [`${moment}_seda`]: extras.seda, [`${moment}_enjuague`]: extras.enjuague });
+  setTodayData({
+    ...state.todayData,
+    [`${moment}_seda`]: extras.seda,
+    [`${moment}_enjuague`]: extras.enjuague,
+    [`${moment}_irrigador`]: extras.irrigador,
+  });
   renderBrushState(state.todayData);
 
   try {

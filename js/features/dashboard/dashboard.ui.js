@@ -33,6 +33,7 @@ function buildExtrasLabel(data, moment) {
   const parts = [];
   if (data[`${moment}_seda`])     parts.push('🦷');
   if (data[`${moment}_enjuague`]) parts.push('💧');
+  if (data[`${moment}_irrigador`]) parts.push('Irrigador');
   return parts.join(' ');
 }
 
@@ -54,17 +55,13 @@ export function renderDashboardStreaks(streaks) {
 }
 
 /**
- * Muestra el modal de seguimiento (seda / enjuague) y retorna una Promise
- * que resuelve con { seda: bool, enjuague: bool } al pulsar "Listo".
+ * Muestra el modal de seguimiento y retorna los extras al pulsar "Listo".
  */
 export function showExtrasModal(moment) {
   return new Promise((resolve) => {
     const modal = byId('extras-modal');
     byId('extras-emoji').textContent  = moment === 'manana' ? '🌅' : '🌙';
     byId('extras-title').textContent  = moment === 'manana' ? 'Mañana registrado 🪥' : 'Noche registrada 🪥';
-
-    let seda     = false;
-    let enjuague = false;
 
     // Resetear estado visual de los toggles
     modal.querySelectorAll('.extras-toggle').forEach((btn) => btn.classList.remove('selected'));
@@ -77,8 +74,6 @@ export function showExtrasModal(moment) {
         const val = btn.dataset.value === 'true';
         modal.querySelectorAll(`[data-extras-key="${key}"]`).forEach((b) => b.classList.remove('selected'));
         btn.classList.add('selected');
-        if (key === 'seda')     seda     = val;
-        if (key === 'enjuague') enjuague = val;
       }, { signal: ac.signal });
     });
 
@@ -86,11 +81,17 @@ export function showExtrasModal(moment) {
     modal.setAttribute('aria-hidden', 'false');
 
     byId('extras-confirm').onclick = () => {
+      const isSelected = (key) => Boolean(
+        modal.querySelector(`.extras-toggle.selected[data-extras-key="${key}"][data-value="true"]`)
+      );
       ac.abort();
       modal.classList.remove('open');
       modal.setAttribute('aria-hidden', 'true');
-      resolve({ seda, enjuague });
+      resolve({
+        seda: isSelected('seda'),
+        enjuague: isSelected('enjuague'),
+        irrigador: isSelected('irrigador'),
+      });
     };
   });
 }
-
