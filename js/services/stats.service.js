@@ -65,24 +65,34 @@ export function countExtras(monthData) {
   let totalBrushings = 0;
   let sedaCount = 0;
   let enjuagueCount = 0;
+  let irrigadorCount = 0;
+
+  const hasExtra = (day, moment, key) => (
+    day[`${moment}_${key}`] === true
+    || day[key] === true
+    || day[`${key}_${moment}`] === true
+  );
 
   Object.values(monthData).forEach((day) => {
     if (day.manana) {
       totalBrushings += 1;
-      if (day.manana_seda) sedaCount += 1;
-      if (day.manana_enjuague) enjuagueCount += 1;
+      if (hasExtra(day, 'manana', 'seda')) sedaCount += 1;
+      if (hasExtra(day, 'manana', 'enjuague')) enjuagueCount += 1;
+      if (hasExtra(day, 'manana', 'irrigador')) irrigadorCount += 1;
     }
     if (day.noche) {
       totalBrushings += 1;
-      if (day.noche_seda) sedaCount += 1;
-      if (day.noche_enjuague) enjuagueCount += 1;
+      if (hasExtra(day, 'noche', 'seda')) sedaCount += 1;
+      if (hasExtra(day, 'noche', 'enjuague')) enjuagueCount += 1;
+      if (hasExtra(day, 'noche', 'irrigador')) irrigadorCount += 1;
     }
   });
 
   const sedaPct = totalBrushings > 0 ? Math.round((sedaCount / totalBrushings) * 100) : 0;
   const enjuaguePct = totalBrushings > 0 ? Math.round((enjuagueCount / totalBrushings) * 100) : 0;
+  const irrigadorPct = totalBrushings > 0 ? Math.round((irrigadorCount / totalBrushings) * 100) : 0;
 
-  return { sedaCount, enjuagueCount, totalBrushings, sedaPct, enjuaguePct };
+  return { sedaCount, enjuagueCount, irrigadorCount, totalBrushings, sedaPct, enjuaguePct, irrigadorPct };
 }
 
 export async function getStatsSnapshot(currentUserId, year, month, allUsers = ['alek', 'cata']) {
