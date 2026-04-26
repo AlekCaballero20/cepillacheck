@@ -24,6 +24,11 @@ export function renderExtrasStats({ alek, cata }) {
   byId('pct-enjuague-alek').textContent = `${alek.enjuaguePct}%`;
   byId('bar-enjuague-cata').style.width = `${cata.enjuaguePct}%`;
   byId('pct-enjuague-cata').textContent = `${cata.enjuaguePct}%`;
+
+  byId('bar-irrigador-alek').style.width = `${alek.irrigadorPct}%`;
+  byId('pct-irrigador-alek').textContent = `${alek.irrigadorPct}%`;
+  byId('bar-irrigador-cata').style.width = `${cata.irrigadorPct}%`;
+  byId('pct-irrigador-cata').textContent = `${cata.irrigadorPct}%`;
 }
 
 export function renderHeatCalendar(year, month, alekData, cataData) {
