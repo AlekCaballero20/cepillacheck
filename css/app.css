@@ -3,8 +3,8 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: var(--nav-h);
-  padding-bottom: env(safe-area-inset-bottom);
+  min-height: var(--nav-h);
+  padding: 5px 8px calc(5px + env(safe-area-inset-bottom));
   background: rgba(22, 27, 34, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -18,24 +18,24 @@
 .bottom-nav.visible { display: flex; }
 
 .nav-btn {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   background: none;
   border: none;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 10px;
   cursor: pointer;
-  padding: 8px 24px;
+  padding: 7px 2px;
   border-radius: var(--radius-sm);
-  transition: color 0.2s var(--ease);
-  letter-spacing: 0.2px;
+  transition: color 0.2s var(--ease), background 0.2s var(--ease);
+  letter-spacing: 0.1px;
 }
 
-.nav-btn svg { width: 22px; height: 22px; stroke-width: 1.8; }
-.nav-btn.active { color: var(--green); }
-.nav-btn.active svg { filter: drop-shadow(0 0 6px var(--green-glow)); }
+.nav-emoji { font-size: 19px; line-height: 1; }
+.nav-btn.active { color: var(--green); background: var(--green-dim); }
 
 .toast {
   position: fixed;
@@ -51,7 +51,7 @@
   opacity: 0;
   transition: all 0.25s var(--ease);
   pointer-events: none;
-  z-index: 200;
+  z-index: 260;
   white-space: nowrap;
   max-width: calc(100vw - 48px);
 }
@@ -83,7 +83,33 @@
   animation: spin 0.55s linear infinite;
 }
 
-#app-loading.hidden {
-  opacity: 0;
-  pointer-events: none;
+#app-loading.hidden { opacity: 0; pointer-events: none; }
+
+.header-with-control {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
+
+.month-input,
+.select-input,
+.text-input,
+textarea.text-input {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  padding: 11px 12px;
+  color-scheme: dark;
+  min-width: 0;
+}
+
+.month-input { max-width: 150px; font-size: 13px; }
+.select-input { width: 100%; }
+.text-input { width: 100%; }
+textarea.text-input { resize: vertical; }
+
+.compact { padding: 11px 12px; width: auto; white-space: nowrap; }
+.empty-state { color: var(--muted); font-size: 13px; line-height: 1.45; padding: 10px 0; }
+.settings-help { color: var(--muted); font-size: 12px; line-height: 1.4; }
