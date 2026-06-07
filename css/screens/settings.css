@@ -71,3 +71,13 @@
   font-size: 12px;
   padding: 4px 0 12px;
 }
+
+.settings-field input[type="number"] {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 15px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  width: 100%;
+}

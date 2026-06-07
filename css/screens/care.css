@@ -1,0 +1,27 @@
+.care-body {
+  padding: 0 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.input-label { color: var(--muted); font-size: 12px; margin-bottom: -5px; }
+.care-list { display: flex; flex-direction: column; gap: 10px; }
+.care-list-item {
+  background: var(--surface2);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  display: grid;
+  gap: 6px;
+}
+.care-list-item.warning { border: 1px solid var(--yellow); background: var(--yellow-dim); }
+.care-list-item div { display: flex; justify-content: space-between; gap: 10px; align-items: start; }
+.care-list-item strong { font-size: 14px; }
+.care-list-item span { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+.care-list-item em { color: var(--green); font-style: normal; font-size: 12px; text-align: right; white-space: nowrap; }
+.care-list-item p { color: var(--muted); font-size: 12px; line-height: 1.45; }
+.care-card input[type="range"] { width: 100%; accent-color: var(--green); }

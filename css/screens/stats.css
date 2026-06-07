@@ -140,3 +140,55 @@
 .legend-dot-yellow { background: var(--yellow); }
 .legend-dot-red { background: var(--red); }
 .legend-dot-surface { background: var(--surface2); }
+
+.insight-card h3 { font-size: 17px; margin-bottom: 6px; }
+.insight-card p { color: var(--muted); font-size: 13px; line-height: 1.45; }
+.habit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.habit-pill {
+  background: var(--surface2);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.habit-pill span { color: var(--muted); font-size: 12px; }
+.habit-pill strong { font-size: 20px; color: var(--text); }
+.weekly-bars {
+  height: 150px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  align-items: end;
+}
+.week-bar-item {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+  gap: 5px;
+  justify-items: center;
+}
+.week-bar-track {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  background: var(--surface2);
+  display: flex;
+  align-items: end;
+  overflow: hidden;
+}
+.week-bar-fill {
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+  background: var(--green);
+  min-height: 4px;
+}
+.week-bar-item strong { font-size: 11px; color: var(--text); }
+.week-bar-item span { font-size: 10px; color: var(--muted); }
+.heat-cell { border: 0; color: rgba(0,0,0,0.6); }
+.heat-cell.purple { background: var(--purple); }
+.legend-dot-purple { background: var(--purple); }
