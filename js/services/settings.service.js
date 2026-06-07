@@ -14,5 +14,6 @@ export async function saveUserSettings(user) {
     nombre: user.nombre,
     email: `${user.id}@cepillacheck.app`,
     hora_recordatorio: user.hora_recordatorio,
+    score_goal: user.score_goal ?? 85,
   }, { merge: true });
 }

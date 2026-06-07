@@ -5,7 +5,9 @@ import { setCurrentUser } from './core/state.js';
 import { onAuthChanged, resolveCurrentUser } from './services/auth.service.js';
 import { bindLoginEvents, resetLoginState } from './features/login/login.controller.js';
 import { bindDashboardEvents, loadDashboard } from './features/dashboard/dashboard.controller.js';
-import { loadStats } from './features/stats/stats.controller.js';
+import { bindStatsEvents, loadStats } from './features/stats/stats.controller.js';
+import { bindHistoryEvents, loadHistory } from './features/history/history.controller.js';
+import { bindCareEvents, loadCare } from './features/care/care.controller.js';
 import { bindSettingsEvents, loadSettings } from './features/settings/settings.controller.js';
 
 function hideLoadingOverlay() {
@@ -23,6 +25,8 @@ function setNavVisibility(isVisible) {
 async function handleNavigation(screen) {
   if (screen === 'dashboard') await loadDashboard();
   if (screen === 'stats') await loadStats();
+  if (screen === 'history') await loadHistory();
+  if (screen === 'care') await loadCare();
   if (screen === 'settings') await loadSettings();
 }
 
@@ -46,13 +50,8 @@ function registerServiceWorker() {
 
       if ('caches' in window) {
         const cacheKeys = await window.caches.keys();
-        await Promise.all(
-          cacheKeys
-            .filter((key) => key.startsWith('cepillacheck-'))
-            .map((key) => window.caches.delete(key))
-        );
+        await Promise.all(cacheKeys.filter((key) => key.startsWith('cepillacheck-')).map((key) => window.caches.delete(key)));
       }
-
       console.log('SW desactivado en desarrollo');
       return;
     }
@@ -71,6 +70,9 @@ function bootstrap() {
   registerNavigateHandler(handleNavigation);
   bindLoginEvents();
   bindDashboardEvents();
+  bindStatsEvents();
+  bindHistoryEvents();
+  bindCareEvents();
   bindSettingsEvents();
   bindNavEvents();
   registerServiceWorker();

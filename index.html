@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="Seguimiento de cepillado de dientes — Alek & Cata" />
+  <meta name="description" content="Seguimiento completo de higiene bucal — Alek & Cata" />
   <meta name="theme-color" content="#0d1117" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -19,6 +19,8 @@
   <link rel="stylesheet" href="./css/screens/login.css" />
   <link rel="stylesheet" href="./css/screens/dashboard.css" />
   <link rel="stylesheet" href="./css/screens/stats.css" />
+  <link rel="stylesheet" href="./css/screens/history.css" />
+  <link rel="stylesheet" href="./css/screens/care.css" />
   <link rel="stylesheet" href="./css/screens/settings.css" />
   <link rel="stylesheet" href="./css/app.css" />
 
@@ -36,7 +38,7 @@
     <div class="login-brand">
       <div class="login-emoji">🪥</div>
       <h1 class="login-title">CepillaCheck</h1>
-      <p class="login-sub">¿Quién eres hoy?</p>
+      <p class="login-sub">Seguimiento bucal de Alek & Cata</p>
     </div>
 
     <div class="login-cards">
@@ -74,12 +76,27 @@
           <div class="dash-date" id="dash-date"></div>
         </div>
       </div>
+      <div class="dash-score-mini">
+        <span id="dash-score-mini-num">—</span>
+        <small>score</small>
+      </div>
     </div>
 
     <div class="dash-body">
       <div class="dash-hero">
-        <h2>¿Ya te cepillaste?</h2>
-        <p id="dash-cta-sub">Registra tus cepillados de hoy</p>
+        <h2>Rutina bucal de hoy</h2>
+        <p id="dash-cta-sub">Registra cepillado, extras y señales</p>
+      </div>
+
+      <div class="card score-card">
+        <div class="score-ring" id="today-score-ring">
+          <span id="today-score">—</span>
+          <small>/100</small>
+        </div>
+        <div class="score-copy">
+          <p class="score-title" id="today-score-title">Calculando...</p>
+          <p class="score-desc" id="today-score-desc">El puntaje combina cepillados, duración, seda, limpieza de lengua y señales reportadas.</p>
+        </div>
       </div>
 
       <div class="brush-buttons">
@@ -98,6 +115,11 @@
         </button>
       </div>
 
+      <div class="card quick-panel">
+        <p class="section-label">Pendientes inteligentes</p>
+        <div id="daily-actions" class="action-list"></div>
+      </div>
+
       <div class="card partner-card">
         <p class="section-label" id="partner-label">Estado de Cata hoy</p>
         <div class="partner-row">
@@ -109,6 +131,11 @@
           <div class="partner-item" id="partner-noche">
             <span class="pi-icon">🌙</span>
             <span class="pi-label">Noche</span>
+            <span class="pi-state">—</span>
+          </div>
+          <div class="partner-item" id="partner-score">
+            <span class="pi-icon">🧮</span>
+            <span class="pi-label">Score</span>
             <span class="pi-state">—</span>
           </div>
         </div>
@@ -128,91 +155,89 @@
   </div>
 
   <div id="screen-stats" class="screen">
-    <div class="screen-header">📊 Estadísticas</div>
+    <div class="screen-header header-with-control">
+      <span>📊 Estadísticas</span>
+      <input id="stats-month" class="month-input" type="month" />
+    </div>
 
     <div class="stats-body">
       <div class="metric-row">
         <div class="metric-box green">
+          <span class="metric-num" id="stat-score">—</span>
+          <span class="metric-label">Score promedio</span>
+        </div>
+        <div class="metric-box blue">
           <span class="metric-num" id="stat-streak">—</span>
           <span class="metric-label">Racha actual</span>
         </div>
-        <div class="metric-box blue">
-          <span class="metric-num" id="stat-max">—</span>
-          <span class="metric-label">Racha máxima</span>
-        </div>
         <div class="metric-box yellow">
-          <span class="metric-num" id="stat-pct">—</span>
-          <span class="metric-label">% este mes</span>
+          <span class="metric-num" id="stat-perfect-days">—</span>
+          <span class="metric-label">Días perfectos</span>
         </div>
       </div>
 
+      <div class="card insight-card">
+        <p class="section-label">Lectura rápida</p>
+        <h3 id="stats-insight-title">Analizando mes...</h3>
+        <p id="stats-insight-desc">Cuando haya datos, aquí aparecerán patrones reales de higiene bucal.</p>
+      </div>
+
       <div class="card">
-        <p class="section-label">Comparativa — este mes</p>
+        <p class="section-label">Comparativa — mes seleccionado</p>
         <div class="compare-list">
           <div class="compare-row-item">
             <span class="cp-name">Alek</span>
-            <div class="cp-bar-wrap">
-              <div class="cp-bar alek" id="bar-alek" style="width: 0%"></div>
-            </div>
+            <div class="cp-bar-wrap"><div class="cp-bar alek" id="bar-alek" style="width: 0%"></div></div>
             <span class="cp-pct" id="pct-alek">0%</span>
           </div>
           <div class="compare-row-item">
             <span class="cp-name">Cata</span>
-            <div class="cp-bar-wrap">
-              <div class="cp-bar cata" id="bar-cata" style="width: 0%"></div>
-            </div>
+            <div class="cp-bar-wrap"><div class="cp-bar cata" id="bar-cata" style="width: 0%"></div></div>
             <span class="cp-pct" id="pct-cata">0%</span>
           </div>
         </div>
       </div>
 
       <div class="card">
-        <p class="section-label">Extras — este mes</p>
+        <p class="section-label">Hábitos del mes</p>
+        <div class="habit-grid">
+          <div class="habit-pill"><span>Mañanas</span><strong id="habit-morning">—</strong></div>
+          <div class="habit-pill"><span>Noches</span><strong id="habit-night">—</strong></div>
+          <div class="habit-pill"><span>Seda</span><strong id="habit-floss">—</strong></div>
+          <div class="habit-pill"><span>Lengua</span><strong id="habit-tongue">—</strong></div>
+          <div class="habit-pill"><span>Duración prom.</span><strong id="habit-duration">—</strong></div>
+          <div class="habit-pill"><span>Síntomas</span><strong id="habit-symptoms">—</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="section-label">Extras — sobre cepillados registrados</p>
         <div class="extras-stats-section">
           <p class="extras-stats-sublabel">🦷 Seda dental</p>
           <div class="compare-list">
-            <div class="compare-row-item">
-              <span class="cp-name">Alek</span>
-              <div class="cp-bar-wrap"><div class="cp-bar alek" id="bar-seda-alek" style="width: 0%"></div></div>
-              <span class="cp-pct" id="pct-seda-alek">0%</span>
-            </div>
-            <div class="compare-row-item">
-              <span class="cp-name">Cata</span>
-              <div class="cp-bar-wrap"><div class="cp-bar cata" id="bar-seda-cata" style="width: 0%"></div></div>
-              <span class="cp-pct" id="pct-seda-cata">0%</span>
-            </div>
+            <div class="compare-row-item"><span class="cp-name">Alek</span><div class="cp-bar-wrap"><div class="cp-bar alek" id="bar-seda-alek" style="width: 0%"></div></div><span class="cp-pct" id="pct-seda-alek">0%</span></div>
+            <div class="compare-row-item"><span class="cp-name">Cata</span><div class="cp-bar-wrap"><div class="cp-bar cata" id="bar-seda-cata" style="width: 0%"></div></div><span class="cp-pct" id="pct-seda-cata">0%</span></div>
           </div>
         </div>
         <div class="extras-stats-section">
           <p class="extras-stats-sublabel">💧 Enjuague bucal</p>
           <div class="compare-list">
-            <div class="compare-row-item">
-              <span class="cp-name">Alek</span>
-              <div class="cp-bar-wrap"><div class="cp-bar alek" id="bar-enjuague-alek" style="width: 0%"></div></div>
-              <span class="cp-pct" id="pct-enjuague-alek">0%</span>
-            </div>
-            <div class="compare-row-item">
-              <span class="cp-name">Cata</span>
-              <div class="cp-bar-wrap"><div class="cp-bar cata" id="bar-enjuague-cata" style="width: 0%"></div></div>
-              <span class="cp-pct" id="pct-enjuague-cata">0%</span>
-            </div>
+            <div class="compare-row-item"><span class="cp-name">Alek</span><div class="cp-bar-wrap"><div class="cp-bar alek" id="bar-enjuague-alek" style="width: 0%"></div></div><span class="cp-pct" id="pct-enjuague-alek">0%</span></div>
+            <div class="compare-row-item"><span class="cp-name">Cata</span><div class="cp-bar-wrap"><div class="cp-bar cata" id="bar-enjuague-cata" style="width: 0%"></div></div><span class="cp-pct" id="pct-enjuague-cata">0%</span></div>
           </div>
         </div>
         <div class="extras-stats-section">
-          <p class="extras-stats-sublabel">Irrigador</p>
+          <p class="extras-stats-sublabel">🌊 Irrigador</p>
           <div class="compare-list">
-            <div class="compare-row-item">
-              <span class="cp-name">Alek</span>
-              <div class="cp-bar-wrap"><div class="cp-bar alek" id="bar-irrigador-alek" style="width: 0%"></div></div>
-              <span class="cp-pct" id="pct-irrigador-alek">0%</span>
-            </div>
-            <div class="compare-row-item">
-              <span class="cp-name">Cata</span>
-              <div class="cp-bar-wrap"><div class="cp-bar cata" id="bar-irrigador-cata" style="width: 0%"></div></div>
-              <span class="cp-pct" id="pct-irrigador-cata">0%</span>
-            </div>
+            <div class="compare-row-item"><span class="cp-name">Alek</span><div class="cp-bar-wrap"><div class="cp-bar alek" id="bar-irrigador-alek" style="width: 0%"></div></div><span class="cp-pct" id="pct-irrigador-alek">0%</span></div>
+            <div class="compare-row-item"><span class="cp-name">Cata</span><div class="cp-bar-wrap"><div class="cp-bar cata" id="bar-irrigador-cata" style="width: 0%"></div></div><span class="cp-pct" id="pct-irrigador-cata">0%</span></div>
           </div>
         </div>
+      </div>
+
+      <div class="card">
+        <p class="section-label">Cumplimiento por día de la semana</p>
+        <div class="weekly-bars" id="weekly-bars"></div>
       </div>
 
       <div class="card heat-card">
@@ -222,8 +247,121 @@
           <div class="legend-item"><div class="legend-dot legend-dot-green"></div>Ambos</div>
           <div class="legend-item"><div class="legend-dot legend-dot-yellow"></div>Uno</div>
           <div class="legend-item"><div class="legend-dot legend-dot-red"></div>Ninguno</div>
-          <div class="legend-item"><div class="legend-dot legend-dot-surface"></div>Sin dato</div>
+          <div class="legend-item"><div class="legend-dot legend-dot-purple"></div>Síntoma</div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-history" class="screen">
+    <div class="screen-header header-with-control">
+      <span>📅 Historial</span>
+      <input id="history-month" class="month-input" type="month" />
+    </div>
+
+    <div class="history-body">
+      <div class="history-toolbar">
+        <select id="history-user" class="select-input">
+          <option value="current">Mi historial</option>
+          <option value="alek">Alek</option>
+          <option value="cata">Cata</option>
+        </select>
+        <button class="btn btn-outline compact" id="btn-export-history" type="button">Exportar CSV</button>
+      </div>
+
+      <div class="metric-row">
+        <div class="metric-box green"><span class="metric-num" id="history-score">—</span><span class="metric-label">Score prom.</span></div>
+        <div class="metric-box blue"><span class="metric-num" id="history-complete">—</span><span class="metric-label">Días completos</span></div>
+        <div class="metric-box yellow"><span class="metric-num" id="history-symptoms">—</span><span class="metric-label">Con señales</span></div>
+      </div>
+
+      <div id="history-list" class="history-list"></div>
+    </div>
+  </div>
+
+  <div id="screen-care" class="screen">
+    <div class="screen-header">🦷 Cuidado bucal</div>
+
+    <div class="care-body">
+      <div class="card care-card">
+        <p class="section-label">Registrar síntoma o señal</p>
+        <form id="symptom-form" class="form-grid">
+          <select id="symptom-type" class="select-input" required>
+            <option value="sangrado">Sangrado de encías</option>
+            <option value="sensibilidad">Sensibilidad</option>
+            <option value="dolor">Dolor</option>
+            <option value="mal_aliento">Mal aliento</option>
+            <option value="boca_seca">Boca seca</option>
+            <option value="afta">Afta o llaga</option>
+            <option value="inflamacion">Inflamación</option>
+            <option value="otro">Otro</option>
+          </select>
+          <select id="symptom-zone" class="select-input">
+            <option value="general">Zona general</option>
+            <option value="superior">Superior</option>
+            <option value="inferior">Inferior</option>
+            <option value="izquierda">Izquierda</option>
+            <option value="derecha">Derecha</option>
+            <option value="frontal">Frontal</option>
+            <option value="muela">Muela</option>
+          </select>
+          <label class="range-label">Intensidad <strong id="symptom-intensity-label">2</strong>/5</label>
+          <input id="symptom-intensity" type="range" min="1" max="5" value="2" />
+          <textarea id="symptom-notes" class="text-input" rows="2" placeholder="Nota breve, por ejemplo: sensibilidad al frío"></textarea>
+          <button class="btn btn-primary" type="submit">Guardar señal</button>
+        </form>
+      </div>
+
+      <div class="card care-card">
+        <p class="section-label">Kit bucal</p>
+        <form id="kit-form" class="form-grid">
+          <select id="kit-type" class="select-input" required>
+            <option value="cepillo">Cepillo</option>
+            <option value="cabezal">Cabezal eléctrico</option>
+            <option value="crema">Crema dental</option>
+            <option value="seda">Seda dental</option>
+            <option value="enjuague">Enjuague</option>
+            <option value="irrigador">Irrigador / boquilla</option>
+          </select>
+          <input id="kit-name" class="text-input" type="text" placeholder="Marca o referencia" />
+          <label class="input-label">Fecha de inicio</label>
+          <input id="kit-start" class="text-input" type="date" />
+          <input id="kit-reminder" class="text-input" type="number" min="1" value="90" placeholder="Días para cambio" />
+          <button class="btn btn-primary" type="submit">Agregar al kit</button>
+        </form>
+      </div>
+
+      <div class="card care-card">
+        <p class="section-label">Visitas odontológicas</p>
+        <form id="visit-form" class="form-grid">
+          <input id="visit-date" class="text-input" type="date" required />
+          <select id="visit-type" class="select-input">
+            <option value="limpieza">Limpieza</option>
+            <option value="revision">Revisión</option>
+            <option value="urgencia">Urgencia</option>
+            <option value="ortodoncia">Ortodoncia</option>
+            <option value="otro">Otro</option>
+          </select>
+          <textarea id="visit-notes" class="text-input" rows="2" placeholder="Hallazgos, recomendaciones o próximos pasos"></textarea>
+          <label class="input-label">Próximo control</label>
+          <input id="visit-next" class="text-input" type="date" />
+          <button class="btn btn-primary" type="submit">Guardar visita</button>
+        </form>
+      </div>
+
+      <div class="card care-card">
+        <p class="section-label">Últimas señales</p>
+        <div id="symptom-list" class="care-list"></div>
+      </div>
+
+      <div class="card care-card">
+        <p class="section-label">Kit activo</p>
+        <div id="kit-list" class="care-list"></div>
+      </div>
+
+      <div class="card care-card">
+        <p class="section-label">Historial odontológico</p>
+        <div id="visit-list" class="care-list"></div>
       </div>
     </div>
   </div>
@@ -241,14 +379,27 @@
       </div>
 
       <div>
-        <div class="settings-section-title">Recordatorio por email</div>
+        <div class="settings-section-title">Recordatorio</div>
         <div class="card settings-card-stack">
           <div class="settings-field">
-            <label for="settings-hora">Hora del recordatorio</label>
+            <label for="settings-hora">Hora del recordatorio nocturno</label>
             <input type="time" id="settings-hora" value="21:00" />
-            <small>El script de Google Apps Script usará esta hora para enviarte el recordatorio.</small>
+            <small>Se guarda en el perfil para que tu script o automatización pueda consultarlo.</small>
+          </div>
+          <div class="settings-field">
+            <label for="settings-goal">Meta mínima de score diario</label>
+            <input type="number" id="settings-goal" min="50" max="100" step="5" value="85" />
+            <small>Usada para resúmenes y alertas visuales dentro de la app.</small>
           </div>
           <button class="btn btn-outline" id="btn-save-settings" type="button">Guardar cambios</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="settings-section-title">Datos</div>
+        <div class="card settings-card-stack">
+          <button class="btn btn-outline" id="btn-export-all" type="button">Exportar mi historial completo CSV</button>
+          <small class="settings-help">Incluye cepillados, extras, duración, señales y notas guardadas en sesiones.</small>
         </div>
       </div>
 
@@ -257,71 +408,71 @@
         <button class="btn btn-danger" id="btn-logout" type="button">Cerrar sesión</button>
       </div>
 
-      <div class="settings-footer">CepillaCheck v1.0 · Alek & Cata 🪥</div>
+      <div class="settings-footer">CepillaCheck v3.0 · Historial & cuidado bucal 🪥</div>
     </div>
   </div>
 
   <nav class="bottom-nav" id="bottom-nav">
-    <button class="nav-btn active" id="nav-dashboard" type="button" data-nav-screen="dashboard">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-        <polyline points="9 22 9 12 15 12 15 22"/>
-      </svg>
+    <button class="nav-btn active" id="nav-dashboard" type="button" data-nav-screen="dashboard" aria-label="Inicio">
+      <span class="nav-emoji">🏠</span>
       Inicio
     </button>
-
-    <button class="nav-btn" id="nav-stats" type="button" data-nav-screen="stats">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="18" y1="20" x2="18" y2="10"/>
-        <line x1="12" y1="20" x2="12" y2="4"/>
-        <line x1="6" y1="20" x2="6" y2="14"/>
-      </svg>
+    <button class="nav-btn" id="nav-stats" type="button" data-nav-screen="stats" aria-label="Estadísticas">
+      <span class="nav-emoji">📊</span>
       Stats
     </button>
-
-    <button class="nav-btn" id="nav-settings" type="button" data-nav-screen="settings">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="3"/>
-        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
-      </svg>
+    <button class="nav-btn" id="nav-history" type="button" data-nav-screen="history" aria-label="Historial">
+      <span class="nav-emoji">📅</span>
+      Historial
+    </button>
+    <button class="nav-btn" id="nav-care" type="button" data-nav-screen="care" aria-label="Cuidado">
+      <span class="nav-emoji">🦷</span>
+      Cuidado
+    </button>
+    <button class="nav-btn" id="nav-settings" type="button" data-nav-screen="settings" aria-label="Ajustes">
+      <span class="nav-emoji">⚙️</span>
       Ajustes
     </button>
   </nav>
 
   <div class="toast" id="toast"></div>
 
-  <!-- Modal de seguimiento: seda dental, enjuague bucal e irrigador -->
   <div id="extras-modal" class="extras-modal" aria-hidden="true">
-    <div class="extras-backdrop"></div>
+    <div class="extras-backdrop" data-close-extras="true"></div>
     <div class="extras-sheet">
       <div class="extras-header">
         <span class="extras-emoji" id="extras-emoji">🌅</span>
-        <span class="extras-title" id="extras-title">Mañana registrado 🪥</span>
+        <div>
+          <span class="extras-title" id="extras-title">Mañana registrada 🪥</span>
+          <p class="extras-subtitle">Guarda el detalle. Sí, los dientes ahora tienen formulario.</p>
+        </div>
       </div>
       <div class="extras-body">
-        <div class="extras-row">
-          <span class="extras-row-label">🦷 Seda dental</span>
-          <div class="extras-toggle-group">
-            <button class="extras-toggle" data-extras-key="seda" data-value="true" type="button">Sí</button>
-            <button class="extras-toggle" data-extras-key="seda" data-value="false" type="button">No</button>
+        <div class="duration-row">
+          <button class="duration-btn" type="button" data-duration-delta="-15">−</button>
+          <div class="duration-display">
+            <strong id="extras-duration-label">2:00</strong>
+            <span>duración</span>
           </div>
+          <button class="duration-btn" type="button" data-duration-delta="15">+</button>
         </div>
-        <div class="extras-row">
-          <span class="extras-row-label">💧 Enjuague bucal</span>
-          <div class="extras-toggle-group">
-            <button class="extras-toggle" data-extras-key="enjuague" data-value="true" type="button">Sí</button>
-            <button class="extras-toggle" data-extras-key="enjuague" data-value="false" type="button">No</button>
-          </div>
-        </div>
-        <div class="extras-row">
-          <span class="extras-row-label">Irrigador</span>
-          <div class="extras-toggle-group">
-            <button class="extras-toggle" data-extras-key="irrigador" data-value="true" type="button">Sí</button>
-            <button class="extras-toggle" data-extras-key="irrigador" data-value="false" type="button">No</button>
-          </div>
-        </div>
+
+        <div class="extras-row"><span class="extras-row-label">🦷 Seda dental</span><div class="extras-toggle-group"><button class="extras-toggle" data-extras-key="seda" data-value="true" type="button">Sí</button><button class="extras-toggle" data-extras-key="seda" data-value="false" type="button">No</button></div></div>
+        <div class="extras-row"><span class="extras-row-label">💧 Enjuague bucal</span><div class="extras-toggle-group"><button class="extras-toggle" data-extras-key="enjuague" data-value="true" type="button">Sí</button><button class="extras-toggle" data-extras-key="enjuague" data-value="false" type="button">No</button></div></div>
+        <div class="extras-row"><span class="extras-row-label">🌊 Irrigador</span><div class="extras-toggle-group"><button class="extras-toggle" data-extras-key="irrigador" data-value="true" type="button">Sí</button><button class="extras-toggle" data-extras-key="irrigador" data-value="false" type="button">No</button></div></div>
+        <div class="extras-row"><span class="extras-row-label">🪥 Crema con flúor</span><div class="extras-toggle-group"><button class="extras-toggle" data-extras-key="fluor" data-value="true" type="button">Sí</button><button class="extras-toggle" data-extras-key="fluor" data-value="false" type="button">No</button></div></div>
+        <div class="extras-row"><span class="extras-row-label">👅 Limpieza de lengua</span><div class="extras-toggle-group"><button class="extras-toggle" data-extras-key="lengua" data-value="true" type="button">Sí</button><button class="extras-toggle" data-extras-key="lengua" data-value="false" type="button">No</button></div></div>
+        <div class="extras-row"><span class="extras-row-label">🩸 Sangrado</span><div class="extras-toggle-group"><button class="extras-toggle" data-extras-key="sangrado" data-value="true" type="button">Sí</button><button class="extras-toggle" data-extras-key="sangrado" data-value="false" type="button">No</button></div></div>
+        <div class="extras-row"><span class="extras-row-label">😮‍💨 Mal aliento</span><div class="extras-toggle-group"><button class="extras-toggle" data-extras-key="mal_aliento" data-value="true" type="button">Sí</button><button class="extras-toggle" data-extras-key="mal_aliento" data-value="false" type="button">No</button></div></div>
+
+        <label class="range-label">Sensibilidad <strong id="extras-sensitivity-label">0</strong>/5</label>
+        <input id="extras-sensitivity" type="range" min="0" max="5" value="0" />
+        <textarea id="extras-note" class="text-input" rows="2" placeholder="Nota opcional: molestia, zona, crema usada, etc."></textarea>
       </div>
-      <button class="btn extras-confirm" id="extras-confirm" type="button">Listo ✓</button>
+      <div class="extras-actions">
+        <button class="btn btn-outline" id="extras-cancel" type="button">Cancelar</button>
+        <button class="btn extras-confirm" id="extras-confirm" type="button">Guardar ✓</button>
+      </div>
     </div>
   </div>
 

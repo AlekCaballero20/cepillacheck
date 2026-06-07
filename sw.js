@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cepillacheck-v6';
+const CACHE_NAME = 'cepillacheck-v9';
 const APP_SHELL = [
   './',
   './index.html',
@@ -9,6 +9,8 @@ const APP_SHELL = [
   './css/screens/login.css',
   './css/screens/dashboard.css',
   './css/screens/stats.css',
+  './css/screens/history.css',
+  './css/screens/care.css',
   './css/screens/settings.css',
   './css/app.css',
   './js/app.js',
@@ -19,16 +21,22 @@ const APP_SHELL = [
   './js/core/dom.js',
   './js/core/router.js',
   './js/core/toast.js',
+  './js/core/download.js',
   './js/services/auth.service.js',
   './js/services/sessions.service.js',
   './js/services/stats.service.js',
   './js/services/settings.service.js',
+  './js/services/care.service.js',
   './js/features/login/login.ui.js',
   './js/features/login/login.controller.js',
   './js/features/dashboard/dashboard.ui.js',
   './js/features/dashboard/dashboard.controller.js',
   './js/features/stats/stats.ui.js',
   './js/features/stats/stats.controller.js',
+  './js/features/history/history.ui.js',
+  './js/features/history/history.controller.js',
+  './js/features/care/care.ui.js',
+  './js/features/care/care.controller.js',
   './js/features/settings/settings.ui.js',
   './js/features/settings/settings.controller.js',
   './icons/icon-192.png',
@@ -46,7 +54,7 @@ self.addEventListener('activate', (event) => {
       self.clients.claim(),
       caches
         .keys()
-        .then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)))),
+        .then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME && key.startsWith('cepillacheck-')).map((key) => caches.delete(key)))),
     ])
   );
 });
