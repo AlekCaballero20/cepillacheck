@@ -225,6 +225,10 @@
   padding-right: 2px;
 }
 
+.extras-body > * {
+  flex: 0 0 auto;
+}
+
 .extras-row {
   display: flex;
   align-items: center;
