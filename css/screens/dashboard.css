@@ -180,13 +180,15 @@
 .extras-sheet {
   position: relative;
   width: 100%;
+  max-height: 100dvh;
   background: var(--surface);
   border-radius: var(--radius) var(--radius) 0 0;
   border-top: 1.5px solid var(--border);
-  padding: 24px 20px 36px;
+  padding: 24px 20px calc(16px + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   gap: 20px;
+  overflow: hidden;
   transform: translateY(24px);
   transition: transform 0.28s var(--ease);
 }
@@ -211,8 +213,14 @@
 
 .extras-body {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   gap: 14px;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 2px;
 }
 
 .extras-row {
@@ -271,6 +279,10 @@
 }
 
 .extras-confirm:active { opacity: 0.8; }
+
+.extras-actions {
+  flex: 0 0 auto;
+}
 
 @media (max-width: 420px) {
   .extras-row {
