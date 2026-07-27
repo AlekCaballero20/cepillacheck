@@ -57,7 +57,7 @@ function registerServiceWorker() {
     }
 
     navigator.serviceWorker
-      .register('./sw.js', { updateViaCache: 'none' })
+      .register('./sw.js?v=10', { updateViaCache: 'none' })
       .then(async (registration) => {
         await registration.update();
         console.log('SW registrado y actualizado');

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cepillacheck-v9';
+const CACHE_NAME = 'cepillacheck-v10';
 const APP_SHELL = [
   './',
   './index.html',
